@@ -36,3 +36,15 @@
 “拍照”添加背景的功能由于比较丑的关系，在此处就不多加赘述，操作和“图库”添加背景差不多。
 在添加笔记的界面中，同样有“更换皮肤”的功能，操作同上。此处仅显示操作完之后的结果。
 ![Alt text](https://github.com/mingxikay/NotePad/blob/master/Not/ScreenShots/更换背景5.jpg)
+## 代码详解
+### 增加时间戳功能
+```JAVA
+    //返回当前的时间
+    public String formatTime() {
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = sdf.format(d);
+        return time;
+    }
+```
+直接使用系统自带函数SimpleDateFormat来格式化时间，格式定为"yyyy-MM-dd HH:mm:ss"。
