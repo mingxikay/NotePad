@@ -37,7 +37,7 @@
 在添加笔记的界面中，同样有“更换皮肤”的功能，操作同上。此处仅显示操作完之后的结果。
 ![Alt text](https://github.com/mingxikay/NotePad/blob/master/Not/ScreenShots/更换背景5.jpg)
 ## 代码详解
-### 增加时间戳功能
+### 时间戳功能
 ```JAVA
     //返回当前的时间
     public String formatTime() {
@@ -46,5 +46,134 @@
         String time = sdf.format(d);
         return time;
     }
+     public long getTime() {
+        return System.currentTimeMillis();//获取系统时间戳
+    }
 ```
 直接使用系统自带函数SimpleDateFormat来格式化时间，格式定为"yyyy-MM-dd HH:mm:ss"。
+### 查询功能
+```JAVA
+public void setChaXunClick(){
+        tvMainActivityChaXun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvMainActivityChaXun.setClickable(false);
+                String content = edtMainActivity.getText().toString();
+                if (TextUtils.isEmpty(content)) {
+                    Toast.makeText(DBChaXunActivity.this, "请输入笔记标题后再查询", Toast.LENGTH_SHORT).show();
+                    tvMainActivityChaXun.setClickable(true);
+                } else {
+                    if ((resultDaoList!=null)){
+                        resultDaoList.clear();
+                        resultDaoList = DBUserInvestmentUtils.getInstance().queryDataDependNotTitle(content);
+
+                        if (myAdapter == null) {
+                            myAdapter = new MyKindAdapter(DBChaXunActivity.this);
+                        }
+                        if (resultDaoList != null && resultDaoList.size() > 0) {
+                            lvDBChuXuActivity.setVisibility(View.VISIBLE);
+                            myAdapter.setLists(resultDaoList);
+                            lvDBChuXuActivity.setAdapter(myAdapter);
+                        } else {
+                            Toast.makeText(DBChaXunActivity.this, "此笔记标题未录入，请输入其他标题查询", Toast.LENGTH_SHORT).show();
+                            lvDBChuXuActivity.setVisibility(View.GONE);
+                        }
+
+                        hideSoftInput(v.getWindowToken());
+                        tvMainActivityChaXun.setClickable(true);
+                    }
+
+                }
+            }
+        });
+    }
+    ```
+    ### 更换皮肤
+    ```JAVA
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add);
+        ButterKnife.bind(this);
+        initView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            callCamera();
+        }
+
+        Bitmap bt = BitmapFactory.decodeFile(path + "head.jpg");// 从Sd中找图片，转换成Bitmap
+        if (bt != null) {
+            @SuppressWarnings("deprecation")
+            Drawable drawable = new BitmapDrawable(bt);// 转换成drawable
+            AddNote.setBackground(drawable);
+        }
+    }
+    ```
+    附加：裁剪图片的过程：
+    ```JAVA
+     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    cropPhoto(data.getData());// 裁剪图片
+                }
+
+                break;
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    File temp = new File(Environment.getExternalStorageDirectory() + "/head.jpg");
+                    cropPhoto(Uri.fromFile(temp));// 裁剪图片
+                }
+
+                break;
+            case 3:
+
+                if (data != null) {
+
+                    Bundle extras = data.getExtras();
+
+                    head = extras.getParcelable("data");
+
+
+                    if (head != null) {
+                        /**
+                         * 上传服务器代码
+                         */
+                        setPicToView(head);// 保存在SD卡中
+
+                        Drawable drawable = new BitmapDrawable(head);
+
+                        AddNote.setBackground(drawable);
+                    }
+                }
+                break;
+            default:
+                break;
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    ;
+
+    /**
+     * 调用系统的裁剪
+     *
+     */
+    public void cropPhoto(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1.5);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("return-data", true);
+
+        startActivityForResult(intent, 3);
+
+    }
+    ```
