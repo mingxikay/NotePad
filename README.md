@@ -110,7 +110,7 @@
         }
     }
 ```    
-#### 附加：裁剪图片的过程：
+### 附加：裁剪图片的过程：
 ```JAVA 
      @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
