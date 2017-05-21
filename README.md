@@ -51,9 +51,10 @@
     }
 ```
 直接使用系统自带函数SimpleDateFormat来格式化时间，格式定为"yyyy-MM-dd HH:mm:ss"。
+
 ### 查询功能
-```JAVA
-public void setChaXunClick(){
+
+    public void setChaXunClick(){
         tvMainActivityChaXun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,9 +88,9 @@ public void setChaXunClick(){
             }
         });
     }
-    ```
-    ### 更换皮肤
-    ```JAVA
+    
+### 更换皮肤
+    
     @Override
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +109,9 @@ public void setChaXunClick(){
             AddNote.setBackground(drawable);
         }
     }
-    ```
-   #### 附加：裁剪图片的过程：
-    ```JAVA
+    
+#### 附加：裁剪图片的过程：
+  
      @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -154,8 +155,6 @@ public void setChaXunClick(){
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    ;
 
     /**
      * 调用系统的裁剪
