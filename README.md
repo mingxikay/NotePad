@@ -7,6 +7,7 @@
 （2）	标题查询</br>
 附加功能：</br>
 （1）更改背景</br>
+（2）界面优化</br>
 ## 功能展示
 打开APP，进入主菜单界面。
 ![Alt text](https://raw.githubusercontent.com/mingxikay/NotePad/master/Not/ScreenShots/主界面.jpg)
